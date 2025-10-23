@@ -1,0 +1,22 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: flight-api
+    environment:
+      KIWI_API_KEY: ${KIWI_API_KEY:-}
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: flight-web
+    depends_on:
+      - api
+    ports:
+      - "5173:80"
+    restart: unless-stopped
